@@ -213,7 +213,7 @@ endfunction
 
 augroup mercenary_buffer
   autocmd!
-  autocmd BufWinLeave * call s:Buffer_winleave(expand('<abuf>'))
+  autocmd BufWinLeave * call s:Buffer_winleave(str2nr(expand('<abuf>')))
 augroup END
 
 " }}}1
