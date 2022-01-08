@@ -225,8 +225,9 @@ function! s:Blame() abort
   "
   " TODO(jlfwong): Considering switching this to use mercenary://blame
 
+  let realpath = trim(system('realpath ' . s:buffer().path()))
   let hg_args = ['blame', '--changeset', '--number', '--user', '--date', '-q']
-  let hg_args += ['--', s:buffer().path()]
+  let hg_args += ['--', realpath]
   let hg_blame_command = call(s:repo().hg_command, hg_args, s:repo())
 
   let temppath = resolve(tempname())
