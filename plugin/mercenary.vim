@@ -175,7 +175,7 @@ function! s:Buffer.path() dict abort
 endfunction
 
 function! s:Buffer.relpath() dict abort
-  return fnamemodify(self.path(), ':.')
+  return fnamemodify(self.path(), ':p')
 endfunction
 
 function! s:Buffer.bufnr() dict abort
@@ -333,7 +333,7 @@ augroup END
 " :HGcat {{{1
 
 function! s:Cat(rev, path) abort
-  execute 'edit ' . s:gen_mercenary_path('cat', a:rev, a:path)
+  execute 'edit ' . s:gen_mercenary_path('cat', a:rev, fnamemodify(a:path, ':p'))
 endfunction
 
 call s:add_command("-nargs=+ -complete=file HGcat call s:Cat(<f-args>)")
