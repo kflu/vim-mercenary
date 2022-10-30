@@ -175,7 +175,7 @@ function! s:Buffer.path() dict abort
 endfunction
 
 function! s:Buffer.relpath() dict abort
-  return fnamemodify(self.path(), ':.')
+  return fnamemodify(self.path(), ':p')
 endfunction
 
 function! s:Buffer.bufnr() dict abort
@@ -225,8 +225,9 @@ function! s:Blame() abort
   "
   " TODO(jlfwong): Considering switching this to use mercenary://blame
 
+  let realpath = trim(system('realpath ' . s:buffer().path()))
   let hg_args = ['blame', '--changeset', '--number', '--user', '--date', '-q']
-  let hg_args += ['--', s:buffer().path()]
+  let hg_args += ['--', realpath]
   let hg_blame_command = call(s:repo().hg_command, hg_args, s:repo())
 
   let temppath = resolve(tempname())
@@ -332,7 +333,7 @@ augroup END
 " :HGcat {{{1
 
 function! s:Cat(rev, path) abort
-  execute 'edit ' . s:gen_mercenary_path('cat', a:rev, a:path)
+  execute 'edit ' . s:gen_mercenary_path('cat', a:rev, fnamemodify(a:path, ':p'))
 endfunction
 
 call s:add_command("-nargs=+ -complete=file HGcat call s:Cat(<f-args>)")
